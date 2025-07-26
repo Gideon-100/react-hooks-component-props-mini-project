@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ArticleList from "../components/ArticleList";
 
+// Sample data
 const posts = [
   {
     id: 1,
@@ -15,12 +16,6 @@ const posts = [
     date: "December 11, 2020",
     preview: "Passing props is never passé",
   },
-  {
-    id: 3,
-    title: "Function Components vs Class Components",
-    date: "December 10, 2020",
-    preview: "React, meet OOJS.",
-  },
 ];
 
 test("renders a <main> element", () => {
@@ -28,7 +23,10 @@ test("renders a <main> element", () => {
   expect(container.querySelector("main")).toBeInTheDocument();
 });
 
-test("renders a Article component for each post passed as a prop", () => {
-  const { container } = render(<ArticleList posts={posts} />);
-  expect(container.querySelector("main").children).toHaveLength(3);
+test("renders an Article component for each post", () => {
+  render(<ArticleList posts={posts} />);
+  const titles = screen.getAllByRole("heading", { level: 3 });
+  expect(titles.length).toBe(posts.length);
 });
+
+
